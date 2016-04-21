@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AccorHotels Dashboard 4</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawBarColors);
+
+    var retention = {};
+
+    $.getJSON("http://localhost:3000/api/retentions.json", function(data) {
+      retention = data;
+    });
+
+    function drawBarColors() {
+      var data1 = new google.visualization.DataTable();
+      data1.addColumn('number', 'Nuits');
+      data1.addColumn('number', 'Nombre de clients');
+      for (var i = 1; i < 20; i++) {
+        data1.addRow([parseInt(retention[i]['nb_nights']), parseInt(retention[i]['total_clients'])]);
+      }
+
+      var data2 = new google.visualization.DataTable();
+      data2.addColumn('number', 'Nuits');
+      data2.addColumn('number', 'Nombre de clients');
+      for (var i = 11; i < 16; i++) {
+        data2.addRow([parseInt(retention[i]['nb_nights']), parseInt(retention[i]['total_clients'])]);
+      }
+
+      var data3 = new google.visualization.DataTable();
+      data3.addColumn('number', 'Nuits');
+      data3.addColumn('number', 'Nombre de clients business');
+      data3.addColumn('number', 'Nombre de clients leisure');
+      for (var i = 1; i < 6; i++) {
+        data3.addRow([parseInt(retention[i]['nb_nights']), parseInt(retention[i]['biz_by_biz']), parseInt(retention[i]['total_clients']) - parseInt(retention[i]['biz_by_biz'])]);
+      }
+
+      var options1 = {
+        legend: {fontName: 'Lato'},
+        title: 'Rétention globale',
+        chartArea: {width: '60%'},
+        colors: ['#b0120a', '#ffab91'],
+        hAxis: {
+          title: 'Nombre de clients',
+          titleTextStyle: {fontName: 'Lato', fontSize: 18}
+        },
+        vAxis: {
+          title: 'Nuits réservées',
+          titleTextStyle: {fontName: 'Lato', fontSize: 18}
+        }
+      };
+      var options2 = {
+        legend: {fontName: 'Lato'},
+        title: 'Zoom de 10 à 15',
+        chartArea: {width: '60%'},
+        colors: ['#b0120a', '#ffab91'],
+        hAxis: {
+          title: 'Nombre de clients',
+          titleTextStyle: {fontName: 'Lato', fontSize: 18}
+        },
+        vAxis: {
+          title: 'Nuits réservées',
+          titleTextStyle: {fontName: 'Lato', fontSize: 18}
+        }
+      };
+      var options3 = {
+        legend: {fontName: 'Lato'},
+        title: 'Rétention des business',
+        chartArea: {width: '60%'},
+        colors: ['#b0120a', '#ffab91'],
+        hAxis: {
+          title: 'Nombre de clients',
+          titleTextStyle: {fontName: 'Lato', fontSize: 18}
+        },
+        vAxis: {
+          title: 'Nuits business réservées',
+          titleTextStyle: {fontName: 'Lato', fontSize: 18}
+        }
+      };
+      var chart1 = new google.visualization.BarChart(document.getElementById('chart_div1'));
+      chart1.draw(data1, options1);
+      var chart2 = new google.visualization.BarChart(document.getElementById('chart_div2'));
+      chart2.draw(data2, options2);
+      var chart3 = new google.visualization.BarChart(document.getElementById('chart_div3'));
+      chart3.draw(data3, options3);
+    }
+</script>
+</head>
+<body>
+  <nav class="center">
+    <img src="img/accorhotels_logo.svg" alt="AccorHotels Logo">
+  </nav>
+  <div class="container">
+    <h1 class="center">Engagement et Rétention des Clients Britanniques</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt eum nobis et. Eum earum neque reprehenderit expedita odio quaerat beatae quas quod, aut quasi. Odit assumenda cupiditate illo eaque eum! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita distinctio, voluptatem recusandae accusamus ducimus laborum quia ab omnis possimus dicta quibusdam nulla corporis ad consequatur, doloremque illo natus molestias atque?</p>
+    <div id="chart_div1"></div>
+    <div id="chart_div2"></div>
+    <div id="chart_div3"></div>
+  </div>
+</body>
+<script type="text/javascript">
+$(function(){
+    $.getJSON('http://localhost:3000/api/retentions.json', function(data) {
+        console.log(data);
+    });
+});
+</script>
+</html>
