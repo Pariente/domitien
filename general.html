@@ -38,7 +38,9 @@
         height: 300,
         fontName: 'Lato',
         slices: {
-          1: {offset: 0.2}
+          0: {color: '#3F51B5'},
+          1: {offset: 0.2, color: '#FF8F00'},
+          2: {color: '#C5CAE9'}
         },
         pieStartAngle: 81
       };
@@ -57,7 +59,7 @@
       var options2 = {
         legend: {position: 'none'},
         chartArea: {width: '80%', height: '80%'},
-        colors: ['#b0120a', '#ffab91'],
+        colors: ['#3F51B5'],
         hAxis: {
           titleTextStyle: {fontName: 'Lato', fontSize: 18}
         },
@@ -73,17 +75,27 @@
 </script>
 </head>
 <body>
-  <header class="center">
-    <img src="img/accorhotels_logo.svg" alt="AccorHotels Logo">
-  </header>
+  <a href="index.html">
+    <header class="center">
+      <img src="img/accorhotels_logo.svg" alt="AccorHotels Logo">
+    </header>
+  </a>
   <div class="container">
     <h1 class="center">Considérations Générales</h1>
     <p>Notre première approche fut de regarder la part des clients qui n’ont eu aucune réservation dans les 24 derniers mois. Nous remarquons donc que 77% des clients britanniques sont inactifs dans cette période.</p>
     <div id="global_donut_chart" class="chart"></div>
     <p class="chart_title">Fig. 1 – Part des clients britanniques inactifs.</p>
-    <p>Notre hypothèse a alors été qu’il devait exister des leviers faisant revenir les clients. Cependant, nous avons rapidement été confronté au fait que certaines réservations différentes concernent des nuits consécutives passés dans le même hôtel et donc qu’il faudrait agréger ces réservations pour corriger la donnée. Nous avons donc décidé d’analyser plutôt le nombre de nuit passé à l’hôtel.</p>
-    <div id="chart_div2"></div>
+    <p>Notre hypothèse a alors été qu’il devait exister des leviers faisant revenir les clients. Cependant, nous avons rapidement été confronté au fait que certaines réservations différentes concernent des nuits consécutives passés dans le même hôtel et donc qu’il faudrait agréger ces réservations pour corriger la donnée. Nous avons donc décidé d’analyser plutôt le nombre de nuit passées à l’hôtel.</p>
+    <div id="chart_div2" class="chart"></div>
     <p class="chart_title">Fig. 2 – Répartition des clients en fonction du nombre de nuits réservées lors des 24 derniers mois.</p>
   </div>
+  <nav>
+    <a href="index.html">
+      Accueil
+    </a>
+    <a href="leisure.html">
+      Suivant
+    </a>
+  </nav>
 </body>
 </html>
