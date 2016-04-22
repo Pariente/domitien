@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AccorHotels Dashboard 4</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(drawChart);
+
+    var global_clients = {};
+    var retention = {};
+
+    $.getJSON("http://10.10.200.175:3000/api/global_clients.json", function(data) {
+      global_clients = data;
+    });
+    $.getJSON("http://10.10.200.175:3000/api/retentions.json", function(data) {
+      retention = data;
+    });
+
+    function drawChart() {
+      var data1 = new google.visualization.DataTable();
+      data1.addColumn('string', 'Catégorie');
+      data1.addColumn('number', 'Nombre de clients');
+
+      for (var i = 0; i < 3; i++) {
+        data1.addRow([global_clients[i]['type_client'], parseInt(global_clients[i]['number_clients'])]);
+      }
+
+      var options = {
+        legend: { position: 'labeled' },
+        chartArea: {width: '80%', height: '80%'},
+        pieHole: 0.4,
+        height: 300,
+        fontName: 'Lato',
+        slices: {
+          1: {offset: 0.2}
+        },
+        pieStartAngle: 81
+      };
+
+      var chart = new google.visualization.PieChart(document.getElementById('global_donut_chart'));
+      chart.draw(data1, options);
+
+      var data2 = new google.visualization.DataTable();
+      data2.addColumn('number', 'Nuits');
+      data2.addColumn('number', 'Nombre de clients');
+      data2.addColumn({type: 'string', role: 'style'});
+      for (var i = 1; i < 20; i++) {
+        data2.addRow([parseInt(retention[i]['nb_nights']), parseInt(retention[i]['total_clients']), 'width: 10']);
+      }
+
+      var options2 = {
+        legend: {position: 'none'},
+        chartArea: {width: '80%', height: '80%'},
+        colors: ['#b0120a', '#ffab91'],
+        hAxis: {
+          titleTextStyle: {fontName: 'Lato', fontSize: 18}
+        },
+        vAxis: {
+          titleTextStyle: {fontName: 'Lato', fontSize: 18}
+        },
+        height: 300
+      };
+
+      var chart2 = new google.visualization.BarChart(document.getElementById('chart_div2'));
+      chart2.draw(data2, options2);
+    }
+</script>
+</head>
+<body>
+  <header class="center">
+    <img src="img/accorhotels_logo.svg" alt="AccorHotels Logo">
+  </header>
+  <div class="container">
+    <h1 class="center">Considérations Générales</h1>
+    <p>Notre première approche fut de regarder la part des clients qui n’ont eu aucune réservation dans les 24 derniers mois. Nous remarquons donc que 77% des clients britanniques sont inactifs dans cette période.</p>
+    <div id="global_donut_chart" class="chart"></div>
+    <p class="chart_title">Fig. 1 – Part des clients britanniques inactifs.</p>
+    <p>Notre hypothèse a alors été qu’il devait exister des leviers faisant revenir les clients. Cependant, nous avons rapidement été confronté au fait que certaines réservations différentes concernent des nuits consécutives passés dans le même hôtel et donc qu’il faudrait agréger ces réservations pour corriger la donnée. Nous avons donc décidé d’analyser plutôt le nombre de nuit passé à l’hôtel.</p>
+    <div id="chart_div2"></div>
+    <p class="chart_title">Fig. 2 – Répartition des clients en fonction du nombre de nuits réservées lors des 24 derniers mois.</p>
+  </div>
+</body>
+</html>
