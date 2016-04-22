@@ -93,9 +93,9 @@
 </script>
 </head>
 <body>
-  <nav class="center">
+  <header class="center">
     <img src="img/accorhotels_logo.svg" alt="AccorHotels Logo">
-  </nav>
+  </header>
   <div class="container">
     <h1 class="center">Considérations Générales</h1>
     <p>Notre première approche fut de regarder la part des clients qui n’ont eu aucune réservation dans les 24 derniers mois :</p>
@@ -103,11 +103,4 @@
     <div id="chart_div3"></div>
   </div>
 </body>
-<script type="text/javascript">
-$(function(){
-    $.getJSON('http://localhost:3000/api/retentions.json', function(data) {
-        console.log(data);
-    });
-});
-</script>
 </html>

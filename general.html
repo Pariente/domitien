@@ -15,10 +15,10 @@
     var global_clients = {};
     var retention = {};
 
-    $.getJSON("http://localhost:3000/api/global_clients.json", function(data) {
+    $.getJSON("http://10.10.200.175:3000/api/global_clients.json", function(data) {
       global_clients = data;
     });
-    $.getJSON("http://localhost:3000/api/retentions.json", function(data) {
+    $.getJSON("http://10.10.200.175:3000/api/retentions.json", function(data) {
       retention = data;
     });
 
@@ -73,9 +73,9 @@
 </script>
 </head>
 <body>
-  <nav class="center">
+  <header class="center">
     <img src="img/accorhotels_logo.svg" alt="AccorHotels Logo">
-  </nav>
+  </header>
   <div class="container">
     <h1 class="center">Considérations Générales</h1>
     <p>Notre première approche fut de regarder la part des clients qui n’ont eu aucune réservation dans les 24 derniers mois. Nous remarquons donc que 77% des clients britanniques sont inactifs dans cette période.</p>
@@ -86,11 +86,4 @@
     <p class="chart_title">Fig. 2 – Répartition des clients en fonction du nombre de nuits réservées lors des 24 derniers mois.</p>
   </div>
 </body>
-<script type="text/javascript">
-$(function(){
-    $.getJSON('http://localhost:3000/api/retentions.json', function(data) {
-        console.log(data);
-    });
-});
-</script>
 </html>
