@@ -12,83 +12,135 @@
     google.charts.load('current', {packages: ['corechart', 'bar']});
     google.charts.setOnLoadCallback(drawBarColors);
 
-    var retention = {};
+    var motivation = {};
+    var gammes = {};
+    var destinations = {};
 
-    $.getJSON("http://10.10.200.175:3000/api/retentions.json", function(data) {
-      retention = data;
+    $.getJSON("http://localhost:3000/api/motivations.json", function(data) {
+      motivation = data;
+    });
+    $.getJSON("http://localhost:3000/api/gammes.json", function(data) {
+      gammes = data;
+    });
+    $.getJSON("http://localhost:3000/api/destinations.json", function(data) {
+      destinations = data;
     });
 
     function drawBarColors() {
+
       var data1 = new google.visualization.DataTable();
-      data1.addColumn('number', 'Nuits');
-      data1.addColumn('number', 'Nombre de clients');
-      for (var i = 1; i < 20; i++) {
-        data1.addRow([parseInt(retention[i]['nb_nights']), parseInt(retention[i]['total_clients'])]);
-      }
-
       var data2 = new google.visualization.DataTable();
-      data2.addColumn('number', 'Nuits');
-      data2.addColumn('number', 'Nombre de clients');
-      for (var i = 11; i < 16; i++) {
-        data2.addRow([parseInt(retention[i]['nb_nights']), parseInt(retention[i]['total_clients'])]);
-      }
-
       var data3 = new google.visualization.DataTable();
-      data3.addColumn('number', 'Nuits');
-      data3.addColumn('number', 'Nombre de clients business');
-      data3.addColumn('number', 'Nombre de clients leisure');
-      for (var i = 1; i < 6; i++) {
-        data3.addRow([parseInt(retention[i]['nb_nights']), parseInt(retention[i]['biz_by_biz']), parseInt(retention[i]['total_clients']) - parseInt(retention[i]['biz_by_biz'])]);
+      var data4 = new google.visualization.DataTable();
+      var data5 = new google.visualization.DataTable();
+      var data6 = new google.visualization.DataTable();
+      var data7 = new google.visualization.DataTable();
+
+      data1.addColumn('number', 'Nuits');
+      data1.addColumn('number', 'Clients purs business');
+      data1.addColumn('number', 'Clients purs leisure');
+      data1.addColumn('number', 'Clients mixtes');
+
+      data2.addColumn('number', 'Nuits leisure');
+      data2.addColumn('number', 'Clients purs leisure');
+      data2.addColumn('number', 'Clients mixtes');
+
+      data3.addColumn('string', 'Gamme');
+      data3.addColumn('number', 'Total nuits');
+
+      data4.addColumn('string', 'Gamme');
+      data4.addColumn('number', 'Total nuits');
+
+      data5.addColumn('string', 'Destination');
+      data5.addColumn('number', 'Total nuits');
+
+      data6.addColumn('string', 'Destination');
+      data6.addColumn('number', 'Total nuits');
+
+      data7.addColumn('string', 'Destination');
+      data7.addColumn('number', 'Total nuits');
+
+
+      for (var i = 0; i < 10; i++) {
+        data1.addRow([parseInt(motivation[i]['nb_nights']), parseInt(motivation[i]['pur_biz']), parseInt(motivation[i]['pur_lei']), parseInt(motivation[i]['mixte'])]);
+        data2.addRow([parseInt(motivation[i]['nb_nights']), parseInt(motivation[i]['pur_lei']), parseInt(motivation[i]['lei_by_mixte'])]);
       }
+      
+      $.each(gammes[0], function(k,v) {
+        data3.addRow([k.toUpperCase(), parseInt(v)]);
+      });
+      $.each(gammes[1], function(k,v) {
+        data4.addRow([k.toUpperCase(), parseInt(v)]);
+      });
+
+      data5.addRow(['International', parseInt(destinations[0]['nuits_ext'])]);
+      data5.addRow(['Domestique', parseInt(destinations[0]['nuits_dom'])]);
+
+      data6.addRow(['International', parseInt(destinations[1]['nuits_ext'])]);
+      data6.addRow(['Domestique', parseInt(destinations[1]['nuits_dom'])]);
+
+      data7.addRow(['International', parseInt(destinations[2]['nuits_ext'])]);
+      data7.addRow(['Domestique', parseInt(destinations[2]['nuits_dom'])]);
 
       var options1 = {
         legend: {fontName: 'Lato'},
-        title: 'Rétention globale',
-        chartArea: {width: '60%'},
-        colors: ['#3F51B5'],
+        chartArea: {width: '70%', height: '80%'},
+        colors: ['#3F51B5', '#FFC107', '#FF6F00'],
         hAxis: {
-          title: 'Nombre de clients',
           titleTextStyle: {fontName: 'Lato', fontSize: 18}
         },
         vAxis: {
-          title: 'Nuits réservées',
           titleTextStyle: {fontName: 'Lato', fontSize: 18}
-        }
+        },
+        height: 300
       };
+
       var options2 = {
         legend: {fontName: 'Lato'},
-        title: 'Zoom de 10 à 15',
-        chartArea: {width: '60%'},
-        colors: ['#3F51B5'],
+        chartArea: {width: '70%', height: '80%'},
+        colors: ['#FFC107', '#FF6F00'],
         hAxis: {
-          title: 'Nombre de clients',
           titleTextStyle: {fontName: 'Lato', fontSize: 18}
         },
         vAxis: {
-          title: 'Nuits réservées',
           titleTextStyle: {fontName: 'Lato', fontSize: 18}
-        }
+        },
+        height: 300,
+        isStacked: true
       };
+
       var options3 = {
-        legend: {fontName: 'Lato'},
-        title: 'Rétention des business',
-        chartArea: {width: '60%'},
-        colors: ['#7986CB', '#303F9F'],
-        hAxis: {
-          title: 'Nombre de clients',
-          titleTextStyle: {fontName: 'Lato', fontSize: 18}
-        },
-        vAxis: {
-          title: 'Nuits business réservées',
-          titleTextStyle: {fontName: 'Lato', fontSize: 18}
-        }
+        legend: { position: 'labeled' },
+        chartArea: {width: '80%', height: '80%'},
+        pieHole: 0.4,
+        height: 300,
+        fontName: 'Lato',
+        sliceVisibilityThreshold: .04
       };
+
+      var options4 = {
+        legend: { position: 'labeled' },
+        chartArea: {width: '80%', height: '80%'},
+        pieHole: 0.4,
+        height: 300,
+        fontName: 'Lato',
+        sliceVisibilityThreshold: .05
+      };
+
       var chart1 = new google.visualization.BarChart(document.getElementById('chart_div1'));
-      chart1.draw(data1, options1);
       var chart2 = new google.visualization.BarChart(document.getElementById('chart_div2'));
+      var chart3 = new google.visualization.PieChart(document.getElementById('chart_div3'));
+      var chart4 = new google.visualization.PieChart(document.getElementById('chart_div4'));
+      var chart5 = new google.visualization.PieChart(document.getElementById('chart_div5'));
+      var chart6 = new google.visualization.PieChart(document.getElementById('chart_div6'));
+      var chart7 = new google.visualization.PieChart(document.getElementById('chart_div7'));
+      chart1.draw(data1, options1);
       chart2.draw(data2, options2);
-      var chart3 = new google.visualization.BarChart(document.getElementById('chart_div3'));
       chart3.draw(data3, options3);
+      chart4.draw(data4, options4);
+      chart5.draw(data5, options4);
+      chart6.draw(data6, options4);
+      chart7.draw(data7, options4);
     }
 </script>
 </head>
@@ -101,8 +153,20 @@
   <div class="container">
     <h1 class="center">Business</h1>
     <p>Notre première approche fut de regarder la part des clients qui n’ont eu aucune réservation dans les 24 derniers mois :</p>
-    <div id="chart_div1"></div>    <div id="chart_div2"></div>
+    <div id="chart_div1"></div>
+    <p class="chart_title">Fig. 1 – Pour chaque total de nuits, le nombre de clients qui ont réservé, selon leur typologie.</p>
+    <div id="chart_div2"></div>
+    <p class="chart_title">Fig. 2 – Pour chaque total de nuits leisure, le nombre de clients qui ont réservé, selon leur typologie.</p>
     <div id="chart_div3"></div>
+    <p class="chart_title">Fig. 3 – Le nombre total de nuits Business par gamme.</p>
+    <div id="chart_div4"></div>
+    <p class="chart_title">Fig. 4 – Le nombre total de nuits Leisure par gamme.</p>
+    <div id="chart_div5"></div>
+    <p class="chart_title">Fig. 5 – Le nombre total de nuits réservées au Royaume-Uni et à l'étranger.</p>
+    <div id="chart_div6"></div>
+    <p class="chart_title">Fig. 6 – Le nombre total de nuits Leisure réservées au Royaume-Uni et à l'étranger.</p>
+    <div id="chart_div7"></div>
+    <p class="chart_title">Fig. 7 – Le nombre total de nuits Business réservées au Royaume-Uni et à l'étranger.</p>
   </div>
 </body>
 </html>

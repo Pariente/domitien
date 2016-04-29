@@ -103,7 +103,7 @@ nav:not(.home) {
 }
 
 
-nav:not(.home) a:first-child, nav a:last-child {
+nav:not(.home) a:first-child, nav:not(.home) a:last-child {
 	display: inline-block;
 	position: absolute;
 	bottom: .1em;

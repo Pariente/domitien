@@ -15,10 +15,10 @@
     var global_clients = {};
     var retention = {};
 
-    $.getJSON("http://10.10.200.175:3000/api/global_clients.json", function(data) {
+    $.getJSON("http://localhost:3000/api/global_clients.json", function(data) {
       global_clients = data;
     });
-    $.getJSON("http://10.10.200.175:3000/api/retentions.json", function(data) {
+    $.getJSON("http://localhost:3000/api/retentions.json", function(data) {
       retention = data;
     });
 
@@ -52,7 +52,7 @@
       data2.addColumn('number', 'Nuits');
       data2.addColumn('number', 'Nombre de clients');
       data2.addColumn({type: 'string', role: 'style'});
-      for (var i = 1; i < 20; i++) {
+      for (var i = 0; i < 15; i++) {
         data2.addRow([parseInt(retention[i]['nb_nights']), parseInt(retention[i]['total_clients']), 'width: 10']);
       }
 
@@ -93,7 +93,7 @@
     <a href="index.html">
       Accueil
     </a>
-    <a href="leisure.html">
+    <a href="business.html">
       Suivant
     </a>
   </nav>
