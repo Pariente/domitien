@@ -134,13 +134,13 @@ nav:not(.home) a:last-child::after{
 	content: "\00A0\00BB\00A0";
 }
 
-.container a, nav:not(.home) a {
+nav:not(.home) a {
   font-family: Lato, sans-serif;
 	color:#FF8F00;
 	text-decoration: none;
 }
 
-.container a:hover, nav:not(.home) a:hover {
+nav:not(.home) a:hover {
 	color: #ffffff;
 	background-color: #FF8F00;
 	transition: .4s ease;
